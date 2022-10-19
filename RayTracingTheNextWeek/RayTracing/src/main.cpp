@@ -5,6 +5,7 @@
 #include "hittable_list.h"
 #include "sphere.h"
 #include "material.h"
+#include "moving_sphere.h"
 
 #include <iostream>
 
@@ -51,7 +52,8 @@ hittable_list random_scene()
 					// diffuse
 					auto albedo = color::random() * color::random();
 					sphere_material = make_shared<lambertian>(albedo);
-					world.add(make_shared<sphere>(center, 0.2, sphere_material));
+					auto center2 = center + vec3(0, random_double(0, .5), 0);
+					world.add(make_shared<moving_sphere>(center, center2, 0.0, 1.0, 0.2, sphere_material));
 				}
 				else if (choose_mat < 0.95)
 				{
@@ -86,30 +88,15 @@ hittable_list random_scene()
 int main()
 {
 	// image
-	const auto aspect_ratio = 3.0 / 2.0;
-	const int image_width = 1200;
+	const auto aspect_ratio = 16.0 / 9.0;
+	const int image_width = 400;
 	const int image_height = static_cast<int>(image_width / aspect_ratio);
-	const int samples_per_pixel = 500;
+	const int samples_per_pixel = 100;
 	const int max_depth = 50;
 
 	// World
 	//auto R = cos(pi / 4);
 	auto world = random_scene();
-
-	//auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-	//auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
-	//auto material_left   = make_shared<dielectric>(1.5);
-	//auto material_right  = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
-	//auto material_left = make_shared<lambertian>(color(0, 0, 1));
-	//auto material_right = make_shared<lambertian>(color(1, 0, 0));
-
-	//world.add(make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-	//world.add(make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-	//world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-	//world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),  -0.4, material_left));
-	//world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
-	//world.add(make_shared<sphere>(point3(-R, 0, -1), R, material_left));
-	//world.add(make_shared<sphere>(point3( R, 0, -1), R, material_right));
 
 	// Camera
 	point3 lookfrom(13, 2, 3);
@@ -118,7 +105,7 @@ int main()
 	auto dist_to_focus = 10.0;
 	auto aperture = 0.1;
 
-	camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
+	camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus, 0.0, 1.0);
 
 	// render
 	std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
