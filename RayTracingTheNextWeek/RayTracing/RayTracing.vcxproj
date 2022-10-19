@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\aabb.h" />
+    <ClInclude Include="include\bvh.h" />
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\hittable.h" />
     <ClInclude Include="include\hittable_list.h" />
@@ -27,6 +29,7 @@
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\rtweekend.h" />
     <ClInclude Include="include\sphere.h" />
+    <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\vec3.h" />
     <ClInclude Include="include\camera.h" />
   </ItemGroup>
