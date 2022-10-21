@@ -26,6 +26,7 @@
     <ClInclude Include="include\hittable_list.h" />
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\moving_sphere.h" />
+    <ClInclude Include="include\perlin.h" />
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\rtweekend.h" />
     <ClInclude Include="include\sphere.h" />

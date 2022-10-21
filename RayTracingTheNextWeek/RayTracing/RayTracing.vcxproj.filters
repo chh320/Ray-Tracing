@@ -54,6 +54,9 @@
     <ClInclude Include="include\texture.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\perlin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
