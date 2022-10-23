@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\aabb.h" />
+    <ClInclude Include="include\aarect.h" />
+    <ClInclude Include="include\box.h" />
     <ClInclude Include="include\bvh.h" />
     <ClInclude Include="include\color.h" />
     <ClInclude Include="include\hittable.h" />
@@ -29,6 +31,7 @@
     <ClInclude Include="include\perlin.h" />
     <ClInclude Include="include\ray.h" />
     <ClInclude Include="include\rtweekend.h" />
+    <ClInclude Include="include\rtw_stb_image.h" />
     <ClInclude Include="include\sphere.h" />
     <ClInclude Include="include\texture.h" />
     <ClInclude Include="include\vec3.h" />

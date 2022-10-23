@@ -57,6 +57,15 @@
     <ClInclude Include="include\perlin.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\rtw_stb_image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\aarect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\box.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
