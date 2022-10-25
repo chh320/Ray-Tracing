@@ -24,6 +24,7 @@
     <ClInclude Include="include\box.h" />
     <ClInclude Include="include\bvh.h" />
     <ClInclude Include="include\color.h" />
+    <ClInclude Include="include\constant_medium.h" />
     <ClInclude Include="include\hittable.h" />
     <ClInclude Include="include\hittable_list.h" />
     <ClInclude Include="include\material.h" />
@@ -64,7 +65,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

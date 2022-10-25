@@ -66,6 +66,9 @@
     <ClInclude Include="include\box.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\constant_medium.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
