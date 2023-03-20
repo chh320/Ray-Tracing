@@ -150,8 +150,8 @@
     <ClInclude Include="..\..\include\ray.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\image.fs" />
-    <None Include="src\image.vs" />
+    <None Include="src\fragment.glsl" />
+    <None Include="src\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

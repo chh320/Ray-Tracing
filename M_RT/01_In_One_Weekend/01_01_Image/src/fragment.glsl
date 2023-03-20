@@ -6,7 +6,7 @@ uniform vec2 screenSize;
 
 #define PI 3.1415926535
 
-// random number
+// random number --------------------------------------------------
 uint m_u = uint(521288629);
 uint m_v = uint(362436069);
 
@@ -54,8 +54,54 @@ vec3 random_in_unit_sphere(){
 	p.x = sin(phi) * cos(theta);
 	p.y = cos(phi);
 	p.z = sin(phi) * sin(theta);
+
+	return p;
 }
 
+// material --------------------------------------------------
+#define MAT_LAMBERTIAN 0
+#define MAT_METALLIC 1
+#define MAT_DIELECTRIC 2
+
+struct Lambertian{
+	vec3 albedo;
+};
+
+Lambertian CreateLambertian(vec3 albedo){
+	Lambertian lambertian;
+	lambertian.albedo = albedo;
+	return lambertian;
+}
+
+struct Metallic{
+	vec3 albedo;
+	float fuzz;
+};
+
+Metallic CreateMetallic(vec3 albedo, float fuzz){
+	Metallic metallic;
+	metallic.albedo = albedo;
+	metallic.fuzz = fuzz;
+	return metallic;
+}
+
+struct Dielectric{
+	vec3 albedo;
+	float ior;
+};
+
+Dielectric CreateDielectric(vec3 albedo, float ior){
+	Dielectric dielectric;
+	dielectric.albedo = albedo;
+	dielectric.ior = ior;
+	return dielectric;
+}
+
+Lambertian lambertMaterials[4];
+Metallic metallicMaterials[4];
+Dielectric dielectricMaterials[4];
+
+// Ray --------------------------------------------------
 struct Ray{
 	vec3 origin;
 	vec3 direction;
@@ -72,6 +118,7 @@ vec3 GetRayLocation(Ray ray, float t){
 	return ray.origin + ray.direction * t;
 }
 
+// Camera --------------------------------------------------
 struct Camera{
 	vec3 lower_left_corner;
 	vec3 horizontal;
@@ -90,15 +137,19 @@ vec3 GammaCorrectiong(vec3 c){
 	return pow(c, vec3( 1.0 / 2.2));
 }
 
+// object --------------------------------------------------
 struct Sphere{
 	vec3 center;
 	float radius;
+	int materialPtr;	// 材质数组下标
+	int materialType;	// 材质类型
 };
 
-Sphere CreateSphere(vec3 center, float radius){
+Sphere CreateSphere(vec3 center, float radius, int type, int ptr){
 	Sphere sphere;
 	sphere.center = center;
 	sphere.radius = radius;
+	sphere.materialType = 
 	return sphere;
 }
 
@@ -116,11 +167,20 @@ World CreateWorld(){
 	return world;
 }
 
+// Hit --------------------------------------------------
 struct HitRecord{
 	float t;
 	vec3 position;
 	vec3 normal;
+	int materialPtr;	// 材质数组下标
+	int materialType;	// 材质类型
 };
+
+void LambertianScatter(in Lambertian lambertian, in Ray incident, in HitRecord hitRecord, out Ray scattered, out vec3 attenuation){
+	attenuation = lambertian.albedo;
+	scattered.origin = hitRecord.position;
+	scattered.direction = hitRecord.normal + random_in_unit_sphere();
+}
 
 bool SphereHit(Sphere sphere, Ray ray, float t_min, float t_max, inout HitRecord hitRecord){
 	vec3 oc = ray.origin - sphere.center;
@@ -135,8 +195,11 @@ bool SphereHit(Sphere sphere, Ray ray, float t_min, float t_max, inout HitRecord
 		float temp = (-b - sqrt(delta)) / (2.0 * a);
 		if(temp < t_max && temp > t_min){
 			hitRecord.t = temp;
-			hitRecord.position = GetRayLocation(ray, temp);
+			hitRecord.position = GetRayLocation(ray, hitRecord.t);
 			hitRecord.normal = normalize(hitRecord.position - sphere.center);
+
+			hitRecord.materialPtr = sphere.materialPtr;
+			hitRecord.materialType = sphere.materialType;
 			return true;
 		}
 		temp = (-b + sqrt(delta)) / (2.0 * a);
@@ -144,6 +207,9 @@ bool SphereHit(Sphere sphere, Ray ray, float t_min, float t_max, inout HitRecord
 			hitRecord.t = temp;
 			hitRecord.position = GetRayLocation(ray, temp);
 			hitRecord.normal = normalize(hitRecord.position - sphere.center);
+
+			hitRecord.materialPtr = sphere.materialPtr;
+			hitRecord.materialType = sphere.materialType;
 			return true;
 		}
 	}
@@ -164,6 +230,7 @@ bool HitWorld(World world, Ray ray, float t_min, float t_max, inout HitRecord re
 	return isHitted;
 }
 
+// Ray Tracing --------------------------------------------------
 vec3 RayTrace(Ray ray){
 	World world = CreateWorld();
 	HitRecord hitRecord;

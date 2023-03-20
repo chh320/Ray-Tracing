@@ -27,10 +27,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\image.vs">
+    <None Include="src\vertex.glsl">
       <Filter>源文件</Filter>
     </None>
-    <None Include="src\image.fs">
+    <None Include="src\fragment.glsl">
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>

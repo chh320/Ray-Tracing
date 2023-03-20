@@ -37,7 +37,7 @@ int main() {
 		return -1;
 	}
 	
-	Shader shader("src/image.vs", "src/image.fs");
+	Shader shader("src/vertex.glsl", "src/fragment.glsl");
 	
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
