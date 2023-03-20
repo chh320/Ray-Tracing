@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a4d13942-0393-4ec9-8fb9-a615e020ecea}</ProjectGuid>
-    <RootNamespace>My0101Image</RootNamespace>
+    <ProjectGuid>{2a62548e-c114-441d-bd0e-d9f2f951aa9f}</ProjectGuid>
+    <RootNamespace>PathTracerToy</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);../../3rdParty/include;../../include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);../../3rdParty/lib</LibraryPath>
+    <IncludePath>C:\project\GLSL-PT\Ray-Tracing\M_RT\3rdParty\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\project\GLSL-PT\Ray-Tracing\M_RT\3rdParty\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -118,6 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\project\GLSL-PT\Ray-Tracing\M_RT\PathTracerToy\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,12 +143,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\3rdParty\glad.c" />
+    <ClCompile Include="include\Vec4.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Program.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\fragment.glsl" />
-    <None Include="src\vertex.glsl" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Config.h" />
+    <ClInclude Include="include\MathUtils.h" />
+    <ClInclude Include="include\Program.h" />
+    <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\Scene.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\ShaderIncludes.h" />
+    <ClInclude Include="include\Vec3.h" />
+    <ClInclude Include="include\Vec4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
