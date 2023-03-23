@@ -1,10 +1,12 @@
-﻿  main.cpp
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(120,3): warning C4065: switch 语句包含“default”但是未包含“case”标签
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(130,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(131,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(135,16): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(136,16): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(138,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(139,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\project\GLSL-PT\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(148,28): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
-  01_01_Image.vcxproj -> C:\project\GLSL-PT\Ray-Tracing\M_RT\x64\Debug\01_01_Image.exe
+﻿  glad.c
+  main.cpp
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(120,3): warning C4065: switch 语句包含“default”但是未包含“case”标签
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(130,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(131,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(135,16): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(136,16): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(138,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(139,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\01_In_One_Weekend\01_01_Image\src\main.cpp(148,28): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  01_01_Image.vcxproj -> E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\x64\Debug\01_01_Image.exe

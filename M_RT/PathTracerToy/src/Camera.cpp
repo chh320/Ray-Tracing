@@ -4,7 +4,8 @@
 
 namespace GLSLPT {
     // perspective projection matrix
-	void Frustum(float left, float right, float bottom, float top, float znear, float zfar, float* m16) {
+	void Frustum(float left, float right, float bottom, float top, float znear, float zfar, float* m16) 
+    {
         float temp, temp2, temp3, temp4;
         temp = 2.0f * znear;
         temp2 = right - left;
@@ -103,7 +104,7 @@ namespace GLSLPT {
         this->fov = Math::Radians(fov);
         focalDist = 0.1f;
         aperture = 0.0;
-        //UpdateCamera();
+        UpdateCamera();
     }
 
     Camera::Camera(const Camera& other) {
@@ -120,20 +121,20 @@ namespace GLSLPT {
     void Camera::OffsetOrientation(float dx, float dy) {
         pitch -= dy;
         yaw += dx;
-        //UpdateCamera();
+        UpdateCamera();
     }
 
     void Camera::Strafe(float dx, float dy)
     {
         Vec3 translation = right * -dx + up * dy;
         pivot = pivot + translation;
-        //UpdateCamera();
+        UpdateCamera();
     }
 
     void Camera::SetRadius(float dr)
     {
         radius += dr;
-        //UpdateCamera();
+        UpdateCamera();
     }
 
     void Camera::SetFov(float val)
