@@ -1,38 +1,14 @@
-/*
- * MIT License
- *
- * Copyright(c) 2019 Asif Ali
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 bool ClosestHit(Ray r, inout State state, inout LightSampleRec lightSample)
 {
     float t = INF;
     float d;
 
 #ifdef OPT_LIGHTS
-    // Intersect Emitters
+    //Intersect Emitters
 #ifdef OPT_HIDE_EMITTERS
-if(state.depth > 0)
+    if(state.depth > 0)
 #endif
-    for (int i = 0; i < numOfLights; i++)
+    for(int i = 0; i < numOfLights; i++)
     {
         // Fetch light Data
         vec3 position = texelFetch(lightsTex, ivec2(i * 5 + 0, 0), 0).xyz;
@@ -44,19 +20,19 @@ if(state.depth > 0)
         float area    = params.y;
         float type    = params.z;
 
-        if (type == QUAD_LIGHT)
+        if(type == QUAD_LIGHT)
         {
             vec3 normal = normalize(cross(u, v));
-            if (dot(normal, r.direction) > 0.) // Hide backfacing quad light
+            if(dot(normal, r.direction) > 0.) // Hide backfacing quad light
                 continue;
-            vec4 plane = vec4(normal, dot(normal, position));
+            vec4 plane = vec4(normal, dot(normal, position)); //plane.w = distance between origin and plane
             u *= 1.0f / dot(u, u);
             v *= 1.0f / dot(v, v);
 
             d = RectIntersect(position, u, v, plane, r);
-            if (d < 0.)
+            if(d < 0.)
                 d = INF;
-            if (d < t)
+            if(d < t)
             {
                 t = d;
                 float cosTheta = dot(-r.direction, normal);
@@ -66,12 +42,12 @@ if(state.depth > 0)
             }
         }
 
-        if (type == SPHERE_LIGHT)
+        if(type == SPHERE_LIGHT)
         {
             d = SphereIntersect(radius, position, r);
-            if (d < 0.)
+            if(d < 0.)
                 d = INF;
-            if (d < t)
+            if(d < t)
             {
                 t = d;
                 vec3 hitPt = r.origin + t * r.direction;
@@ -203,6 +179,7 @@ if(state.depth > 0)
                 continue;
             }
         }
+
         index = stack[--ptr];
 
         // If we've traversed the entire BLAS then switch to back to TLAS and resume where we left off
@@ -216,7 +193,7 @@ if(state.depth > 0)
             rTrans.direction = r.direction;
         }
     }
-
+    
     // No intersections
     if (t == INF)
         return false;

@@ -25,9 +25,9 @@ Renderer* renderer = nullptr;
 std::vector<string> sceneFiles;
 std::vector<string> envMaps;
 
+int sampleSceneIdx = 1;
 float mouseSensitivity = 0.01f;
 bool keyPressed = false;
-int sampleSceneIdx = 0;
 int selectedInstance = 0;
 double lastTime = SDL_GetTicks();
 int envMapIdx = 0;

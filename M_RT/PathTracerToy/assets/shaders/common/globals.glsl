@@ -1,46 +1,22 @@
-/*
- * MIT License
- *
- * Copyright(c) 2019 Asif Ali
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
+#define PI          3.14159265358979323
+#define INV_PI      0.31830988618379067
+#define TWO_PI      6.28318530717958648
+#define INV_TWO_PI  0.15915494309189533
+#define INV_4_PI    0.07957747154594766
+#define EPS         0.0003
+#define INF         1000000.0
 
-#define PI         3.14159265358979323
-#define INV_PI     0.31830988618379067
-#define TWO_PI     6.28318530717958648
-#define INV_TWO_PI 0.15915494309189533
-#define INV_4_PI   0.07957747154594766
-#define EPS 0.0003
-#define INF 1000000.0
+#define QUAD_LIGHT      0
+#define SPHERE_LIGHT    1
+#define DISTANT_LIGHT   2
 
-#define QUAD_LIGHT 0
-#define SPHERE_LIGHT 1
-#define DISTANT_LIGHT 2
+#define ALPHA_MODE_OPAQUE   0
+#define ALPHA_MODE_BLEND    1
+#define ALPHA_MODE_MASK     2
 
-#define ALPHA_MODE_OPAQUE 0
-#define ALPHA_MODE_BLEND 1
-#define ALPHA_MODE_MASK 2
-
-#define MEDIUM_NONE 0
-#define MEDIUM_ABSORB 1
-#define MEDIUM_SCATTER 2
+#define MEDIUM_NONE     0
+#define MEDIUM_ABSORB   1
+#define MEDIUM_SCATTER  2
 #define MEDIUM_EMISSIVE 3
 
 struct Ray
@@ -142,7 +118,7 @@ uniform Camera camera;
 
 //RNG from code by Moroz Mykhailo (https://www.shadertoy.com/view/wltcRS)
 
-//internal RNG state 
+//internal RNG state
 uvec4 seed;
 ivec2 pixel;
 

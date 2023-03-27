@@ -1,33 +1,9 @@
-/*
- * MIT License
- *
- * Copyright(c) 2019 Asif Ali
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 bool AnyHit(Ray r, float maxDist)
 {
 
 #ifdef OPT_LIGHTS
     // Intersect Emitters
-    for (int i = 0; i < numOfLights; i++)
+    for(int i = 0; i < numOfLights; i++)
     {
         // Fetch light Data
         vec3 position = texelFetch(lightsTex, ivec2(i * 5 + 0, 0), 0).xyz;
@@ -40,7 +16,7 @@ bool AnyHit(Ray r, float maxDist)
         float type    = params.z;
 
         // Intersect rectangular area light
-        if (type == QUAD_LIGHT)
+        if(type == QUAD_LIGHT)
         {
             vec3 normal = normalize(cross(u, v));
             vec4 plane = vec4(normal, dot(normal, position));
@@ -48,15 +24,15 @@ bool AnyHit(Ray r, float maxDist)
             v *= 1.0f / dot(v, v);
 
             float d = RectIntersect(position, u, v, plane, r);
-            if (d > 0.0 && d < maxDist)
+            if(d > 0.0 && d < maxDist)
                 return true;
         }
 
         // Intersect spherical area light
-        if (type == SPHERE_LIGHT)
+        if(type == SPHERE_LIGHT)
         {
             float d = SphereIntersect(radius, position, r);
-            if (d > 0.0 && d < maxDist)
+            if(d > 0.0 && d < maxDist)
                 return true;
         }
     }
@@ -80,10 +56,9 @@ bool AnyHit(Ray r, float maxDist)
     rTrans.origin = r.origin;
     rTrans.direction = r.direction;
 
-    while (index != -1)
+    while(index != -1)
     {
         ivec3 LRLeaf = ivec3(texelFetch(BVH, index * 3 + 2).xyz);
-
         int leftIndex  = int(LRLeaf.x);
         int rightIndex = int(LRLeaf.y);
         int leaf       = int(LRLeaf.z);
@@ -113,7 +88,7 @@ bool AnyHit(Ray r, float maxDist)
                 uvt.xyz = uvt.xyz / det;
                 uvt.w = 1.0 - uvt.x - uvt.y;
 
-                if (all(greaterThanEqual(uvt, vec4(0.0))) && uvt.z < maxDist)
+                if(all(greaterThanEqual(uvt, vec4(0.0))) && uvt.z < maxDist)
                 {
 #if defined(OPT_ALPHA_TEST) && !defined(OPT_MEDIUM)
                     vec2 t0 = vec2(v0.w, texelFetch(normalsTex, vertIndices.x).w);
@@ -140,10 +115,9 @@ bool AnyHit(Ray r, float maxDist)
                     return true;
 #endif
                 }
-                    
             }
         }
-        else if (leaf < 0) // Leaf node of TLAS
+        else if(leaf < 0) // Leaf node of TLAS
         {
             vec4 r1 = texelFetch(transformsTex, ivec2((-leaf - 1) * 4 + 0, 0), 0).xyzw;
             vec4 r2 = texelFetch(transformsTex, ivec2((-leaf - 1) * 4 + 1, 0), 0).xyzw;
@@ -165,7 +139,7 @@ bool AnyHit(Ray r, float maxDist)
 #endif
             continue;
         }
-        else
+        else 
         {
             leftHit =  AABBIntersect(texelFetch(BVH, leftIndex  * 3 + 0).xyz, texelFetch(BVH, leftIndex  * 3 + 1).xyz, rTrans);
             rightHit = AABBIntersect(texelFetch(BVH, rightIndex * 3 + 0).xyz, texelFetch(BVH, rightIndex * 3 + 1).xyz, rTrans);
@@ -211,6 +185,5 @@ bool AnyHit(Ray r, float maxDist)
             rTrans.direction = r.direction;
         }
     }
-
     return false;
 }

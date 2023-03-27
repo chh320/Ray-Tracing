@@ -1,2 +1,17 @@
-﻿  Camera.cpp
+﻿  Renderer.cpp
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(150,158): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(158,156): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(169,151): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(180,214): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(272,26): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(273,26): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(298,92): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(298,65): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(483,92): warning C4267: “参数”: 从“size_t”转换到“GLint”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(507,92): warning C4267: “参数”: 从“size_t”转换到“GLint”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(535,70): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(535,43): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(629,160): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(633,162): warning C4267: “参数”: 从“size_t”转换到“GLsizei”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTracerToy\src\Renderer.cpp(638,109): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
   PathTracerToy.vcxproj -> E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\x64\Debug\PathTracerToy.exe
