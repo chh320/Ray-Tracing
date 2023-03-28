@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.33328.57
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_01_Image", "01_In_One_Weekend\01_01_Image\01_01_Image.vcxproj", "{A4D13942-0393-4EC9-8FB9-A615E020ECEA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PathTracerToy", "PathTracerToy\PathTracerToy.vcxproj", "{2A62548E-C114-441D-BD0E-D9F2F951AA9F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,14 +21,6 @@ Global
 		{A4D13942-0393-4EC9-8FB9-A615E020ECEA}.Release|x64.Build.0 = Release|x64
 		{A4D13942-0393-4EC9-8FB9-A615E020ECEA}.Release|x86.ActiveCfg = Release|Win32
 		{A4D13942-0393-4EC9-8FB9-A615E020ECEA}.Release|x86.Build.0 = Release|Win32
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Debug|x64.ActiveCfg = Debug|x64
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Debug|x64.Build.0 = Debug|x64
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Debug|x86.ActiveCfg = Debug|Win32
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Debug|x86.Build.0 = Debug|Win32
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Release|x64.ActiveCfg = Release|x64
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Release|x64.Build.0 = Release|x64
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Release|x86.ActiveCfg = Release|Win32
-		{2A62548E-C114-441D-BD0E-D9F2F951AA9F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
