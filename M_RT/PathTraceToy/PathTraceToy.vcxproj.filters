@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{3445c10c-41b4-4c3c-b344-8503bc512558}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -32,8 +35,31 @@
     <ClInclude Include="include\Quad.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\bvh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\triangle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\scene.h">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\pathTrace.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="assets\shaders\output.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

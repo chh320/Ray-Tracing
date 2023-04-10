@@ -117,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\3rdParty\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\3rdParty\include;.\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,9 +148,18 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\bvh.h" />
+    <ClInclude Include="include\material.h" />
+    <ClInclude Include="include\mesh.h" />
     <ClInclude Include="include\Quad.h" />
     <ClInclude Include="include\render.h" />
     <ClInclude Include="include\scene.h" />
+    <ClInclude Include="include\triangle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\output.glsl" />
+    <None Include="assets\shaders\pathTrace.glsl" />
+    <None Include="assets\shaders\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
