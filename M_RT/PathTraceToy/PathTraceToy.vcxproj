@@ -159,6 +159,7 @@
   <ItemGroup>
     <None Include="assets\shaders\output.glsl" />
     <None Include="assets\shaders\pathTrace.glsl" />
+    <None Include="assets\shaders\tonemap.glsl" />
     <None Include="assets\shaders\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

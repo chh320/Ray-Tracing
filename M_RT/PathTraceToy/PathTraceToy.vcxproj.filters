@@ -61,5 +61,8 @@
     <None Include="assets\shaders\output.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="assets\shaders\tonemap.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

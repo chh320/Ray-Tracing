@@ -2,8 +2,9 @@
 in vec2 TexCoord;
 
 out vec4 FragColor;
+uniform sampler2D accumTex;
 
 void main()
 {	
-	FragColor = vec4(0.8, 0.8, 0.8, 1.0);
+	FragColor = vec4(texture(accumTex, TexCoord).rgb, 1.0);
 }

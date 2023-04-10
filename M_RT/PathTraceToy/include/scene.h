@@ -21,14 +21,18 @@ public:
 
 Scene::Scene(const std::string& objectDirectory) {
 	glm::mat4 model = glm::mat4(1.f);
-	model = glm::translate(model, glm::vec3(0.f, 0.4f, 0.f));
-	model = glm::scale(model, glm::vec3(0.1f));
+	model = glm::translate(model, glm::vec3(0.f, 0.3f, 0.f));
+	model = glm::scale(model, glm::vec3(0.08f));
 
 	shared_ptr<Material> m = make_shared<Material>();
-	m->emissive = glm::vec3(1.0, 0.8, 0.0);
+	m->emissive = glm::vec3(1.0, 1.0, 0.3) * glm::vec3(5.f);
 	shared_ptr<Mesh> sphere = make_shared<Mesh>(objectDirectory + "sphere2.obj",		m, model);
-	shared_ptr<Mesh> bunny  = make_shared<Mesh>(objectDirectory + "Stanford Bunny.obj", make_shared<Material>());
-	shared_ptr<Mesh> floor  = make_shared<Mesh>(objectDirectory + "quad2.obj", make_shared<Material>());
+	shared_ptr<Material> m2 = make_shared<Material>();
+	m2->baseColor = glm::vec3(1.0, 0.2, 0.2);
+	shared_ptr<Mesh> bunny  = make_shared<Mesh>(objectDirectory + "Stanford Bunny.obj", m2);
+	model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(0.f, .03f, 0.f));
+	shared_ptr<Mesh> floor  = make_shared<Mesh>(objectDirectory + "quad2.obj", make_shared<Material>(), model);
 
 	std::vector<Triangle>().swap(triangles);
 	triangles.insert(triangles.end(), bunny->triangles.begin(), bunny->triangles.end());

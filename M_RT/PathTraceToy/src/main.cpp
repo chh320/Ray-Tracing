@@ -17,8 +17,8 @@
 GLFWwindow* window;
 std::shared_ptr<Render> render;
 
-const int SCR_WIDTH = 600;
-const int SCR_HEIGHT = 600;
+const int SCR_WIDTH = 900;
+const int SCR_HEIGHT = 800;
 
 
 float lastX = SCR_WIDTH  * 0.5f;

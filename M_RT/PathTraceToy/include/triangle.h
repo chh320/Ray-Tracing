@@ -8,9 +8,7 @@ class Triangle
 public:
     Triangle() {}
     Triangle(const glm::vec3& v1, const glm::vec3& v2, const glm::vec3& v3, std::shared_ptr<Material> m) : p1(v1), p2(v2), p3(v3), material(m) {
-        n1 = p1;
-        n2 = p2;
-        n3 = p3;
+        n1 = n2 = n3 = glm::normalize(glm::cross(p2 - p1, p3 - p1));
         center = (p1 + p2 + p3) / glm::vec3(3.0);
     }
 

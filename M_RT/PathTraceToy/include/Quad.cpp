@@ -31,7 +31,7 @@ Quad::Quad()
 void Quad::Draw(std::shared_ptr<Shader> shader, unsigned int& frameCounter)
 {
     shader->use();
-    shader->setInt("frameCounter", frameCounter++);
+    shader->setInt("frameCounter", frameCounter);
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);

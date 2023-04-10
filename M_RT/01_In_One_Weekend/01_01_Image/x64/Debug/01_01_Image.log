@@ -1,2 +1,1 @@
-﻿LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
-  01_01_Image.vcxproj -> C:\project\GLSL-PT\Ray-Tracing\M_RT\x64\Debug\01_01_Image.exe
+﻿  01_01_Image.vcxproj -> E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\x64\Debug\01_01_Image.exe

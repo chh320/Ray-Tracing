@@ -23,10 +23,10 @@ public:
 		trianglesAttrib = scene.trianglesAttrib;
 		bvhNodes = scene.bvhNodes;
 
-		camera = std::make_shared<Camera>(glm::vec3(0.f, 0.1f, 0.5f));
+		camera = std::make_shared<Camera>(glm::vec3(0.f, 0.1f, 0.2f));
 
 		InitGPUDataBuffers();
-		//InitFBOs();
+		InitFBOs();
 		InitShaders(shadersDirectory);
 	}
 	void draw(unsigned int& frameCounter);
@@ -59,6 +59,7 @@ protected:
 	// Shaders
 	std::shared_ptr<Shader> pathTraceShader;
 	std::shared_ptr<Shader> outputShader;
+	std::shared_ptr<Shader> tonemapShader;
 
 	// Render textures
 	GLuint pathTraceTexture;
@@ -100,9 +101,34 @@ void Render::InitGPUDataBuffers() {
 	glBindTexture(GL_TEXTURE_BUFFER, bvhNodeTex);
 }
 
+void Render::InitFBOs() {
+	glGenFramebuffers(1, &pathTraceFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, pathTraceFBO);
+
+	glGenTextures(1, &pathTraceTexture);
+	glBindTexture(GL_TEXTURE_2D, pathTraceTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, renderWidth, renderHeight, 0, GL_RGBA, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pathTraceTexture, 0);
+
+	glGenFramebuffers(1, &accumFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, accumFBO);
+
+	glGenTextures(1, &accumTexture);
+	glBindTexture(GL_TEXTURE_2D, accumTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, renderWidth, renderHeight, 0, GL_RGBA, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, accumTexture, 0);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "pathTrace.glsl").c_str());
-	//outputShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "output.glsl").c_str());
+	outputShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "output.glsl").c_str());
+	tonemapShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "tonemap.glsl").c_str());
 
 	pathTraceShader->use();
 	pathTraceShader->setInt("nTriangles", trianglesAttrib.size() / 12);
@@ -110,14 +136,30 @@ void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader->setInt("height", renderHeight);
 	pathTraceShader->setVec3("cameraPos", camera->Position);
 	pathTraceShader->setMat4("cameraPos", glm::mat4(1.f));
+	pathTraceShader->setInt("accumTex", 0);
 	pathTraceShader->setInt("triangleTex", 1);
 	pathTraceShader->setInt("nodesTex", 2);
 
+	outputShader->setInt("accumTex", 0);
+	tonemapShader->setInt("accumTex", 0);
 }
 
 void Render::draw(unsigned int& frameCounter) {
+	frameCounter++;
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindFramebuffer(GL_FRAMEBUFFER, pathTraceFBO);
+	glBindTexture(GL_TEXTURE_2D, accumTexture);
 	quad->Draw(pathTraceShader, frameCounter);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, accumFBO);
+	glBindTexture(GL_TEXTURE_2D, pathTraceTexture);
+	quad->Draw(outputShader, frameCounter);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, accumTexture);
+	quad->Draw(tonemapShader, frameCounter);
 }
 
 #endif // !RENDER_H

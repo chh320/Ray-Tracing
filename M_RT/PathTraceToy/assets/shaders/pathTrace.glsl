@@ -85,8 +85,8 @@ struct HitResult {
  * ´úÂëÀ´Ô´£ºhttps://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/
 */
 
-uint seed = uint(uint((TexCoord.x * 0.5 + 0.5) * width) * uint(1973) +
-    uint((TexCoord.y * 0.5 + 0.5) * height) * uint(9277) +
+uint seed = uint(uint((TexCoord.x) * width) * uint(1973) +
+    uint((TexCoord.y) * height) * uint(9277) +
     uint(frameCounter) * uint(26699)) | uint(1);
 
 uint wang_hash(inout uint seed) {
@@ -414,7 +414,7 @@ void main()
 
     ray.origin = cameraPos;
     vec2 AA = vec2((rand() - 0.5) / float(width), (rand() - 0.5) / float(height));
-    vec4 dir = vec4(TexCoord.xy + AA, -1.0, 0.0);
+    vec4 dir = vec4((TexCoord * 2.0 - 1.0).xy + AA, -1.0, 0.0);
     ray.direction = normalize(dir.xyz);
 
     HitResult firstHit = hitBVH(ray);
@@ -428,7 +428,8 @@ void main()
         color = Le + Li;
     }
 
-    //vec3 accum = texture2D(accumTex, TexCoord * 0.5 + 0.5).rgb;
-    //color = mix(accum, color, 1.0 / float(frameCounter + 1));
+    vec3 accum = texture2D(accumTex, TexCoord).rgb;
+    color = mix(accum, color, 1.0 / float(frameCounter + 1));
+    //color = color + accum;
     FragColor = vec4(color, 1.0);
 }
