@@ -28,11 +28,12 @@ Quad::Quad()
     glBindVertexArray(0);
 }
 
-void Quad::Draw(std::shared_ptr<Shader> shader, unsigned int& frameCounter)
+void Quad::Draw(std::shared_ptr<Shader> shader)
 {
     shader->use();
-    shader->setInt("frameCounter", frameCounter);
     glBindVertexArray(vao);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+    shader->stopUse();
 }

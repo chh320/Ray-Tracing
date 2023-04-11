@@ -85,7 +85,8 @@ struct HitResult {
  * 代码来源：https://blog.demofox.org/2020/05/25/casual-shadertoy-path-tracing-1-basic-camera-diffuse-emissive/
 */
 
-uint seed = uint(uint((TexCoord.x) * width) * uint(1973) +
+uint seed = uint(
+    uint((TexCoord.x) * width) * uint(1973) +
     uint((TexCoord.y) * height) * uint(9277) +
     uint(frameCounter) * uint(26699)) | uint(1);
 
@@ -373,7 +374,7 @@ vec3 pathTracing(HitResult hit, int maxBounce) {
     vec3 Lo = vec3(0);      // 最终的颜色
     vec3 history = vec3(1); // 递归积累的颜色
 
-    for(int bounce = 0; bounce < maxBounce; bounce++) {
+    for(int bounce=0; bounce<maxBounce; bounce++) {
         // 随机出射方向 wi
         vec3 wi = toNormalHemisphere(SampleHemisphere(), hit.normal);
 
@@ -390,20 +391,20 @@ vec3 pathTracing(HitResult hit, int maxBounce) {
 
         // 未命中
         if(!newHit.isHit) {
-            // vec3 skyColor = sampleHdr(randomRay.direction);
-            // Lo += history * skyColor * f_r * cosine_i / pdf;
+            //vec3 skyColor = sampleHdr(randomRay.direction);
+            //Lo += history * skyColor * f_r * cosine_i / pdf;
             break;
         }
-
+        
         // 命中光源积累颜色
         vec3 Le = newHit.material.emissive;
         Lo += history * Le * f_r * cosine_i / pdf;
-
+        
         // 递归(步进)
         hit = newHit;
         history *= f_r * cosine_i / pdf;  // 累积颜色
     }
-
+    
     return Lo;
 }
 
@@ -414,7 +415,7 @@ void main()
 
     ray.origin = cameraPos;
     vec2 AA = vec2((rand() - 0.5) / float(width), (rand() - 0.5) / float(height));
-    vec4 dir = vec4((TexCoord * 2.0 - 1.0).xy + AA, -1.0, 0.0);
+    vec4 dir = vec4((TexCoord * 2.0 - 1.0).xy + AA, -1.5, 0.0);
     ray.direction = normalize(dir.xyz);
 
     HitResult firstHit = hitBVH(ray);

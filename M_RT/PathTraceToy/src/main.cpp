@@ -17,9 +17,11 @@
 GLFWwindow* window;
 std::shared_ptr<Render> render;
 
-const int SCR_WIDTH = 900;
+const int SCR_WIDTH = 800;
 const int SCR_HEIGHT = 800;
 
+int lastWidth = SCR_WIDTH;
+int lastHeight = SCR_HEIGHT;
 
 float lastX = SCR_WIDTH  * 0.5f;
 float lastY = SCR_HEIGHT * 0.5f;
@@ -28,7 +30,7 @@ bool firstMouse = true;
 float deltaTime = 0.f;
 float lastFrame = 0.f;
 
-unsigned int frameCounter;
+unsigned int frameCounter = 1;
 clock_t t1, t2;
 
 const std::string shaderPath = "./assets/shaders/";
@@ -37,6 +39,7 @@ const std::string objectPath = "./assets/obj/";
 bool initWindow();
 bool initRender();
 void Draw();
+void Update();
 
 int main() {
 	if (!initWindow())
@@ -45,8 +48,11 @@ int main() {
 	if (!initRender())
 		return -1;
 
+	GLFWvidmode return_struct;
+
 	while (!glfwWindowShouldClose(window)) {
 		Draw();
+		Update();
 	}
 	glfwTerminate();
 	return 0;
@@ -109,8 +115,22 @@ void Draw() {
 
 	glEnable(GL_DEPTH_TEST);
 
-	render->draw(frameCounter);
+	render->Draw();
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+}
+
+void updateRenderSize() {
+	glfwGetWindowSize(window, &render->renderWidth, &render->renderHeight);
+	if (render->renderWidth != lastWidth || render->renderHeight != lastHeight) {
+		lastWidth = render->renderWidth;
+		lastHeight = render->renderHeight;
+		render->ResizeRenderer(shaderPath);
+	}
+}
+
+void Update(){
+	updateRenderSize();
+	render->Update(frameCounter);
 }

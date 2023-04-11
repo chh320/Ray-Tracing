@@ -23,15 +23,17 @@ public:
 		trianglesAttrib = scene.trianglesAttrib;
 		bvhNodes = scene.bvhNodes;
 
-		camera = std::make_shared<Camera>(glm::vec3(0.f, 0.1f, 0.2f));
+		camera = std::make_shared<Camera>(glm::vec3(0.f, 0.1f, 0.5f));
 
 		InitGPUDataBuffers();
 		InitFBOs();
 		InitShaders(shadersDirectory);
 	}
-	void draw(unsigned int& frameCounter);
+	void Draw();
+	void Update(unsigned int& frameCounter);
+	void ResizeRenderer(const std::string& shadersDirectory);
 
-protected:
+public:
 	std::shared_ptr<Quad> quad;
 	std::shared_ptr<Mesh> bunny;
 	std::shared_ptr<Mesh> sphere;
@@ -127,8 +129,8 @@ void Render::InitFBOs() {
 
 void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "pathTrace.glsl").c_str());
-	outputShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "output.glsl").c_str());
-	tonemapShader = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "tonemap.glsl").c_str());
+	outputShader    = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "output.glsl").c_str());
+	tonemapShader   = std::make_shared<Shader>((shadersDirectory + "vertex.glsl").c_str(), (shadersDirectory + "tonemap.glsl").c_str());
 
 	pathTraceShader->use();
 	pathTraceShader->setInt("nTriangles", trianglesAttrib.size() / 12);
@@ -139,27 +141,57 @@ void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader->setInt("accumTex", 0);
 	pathTraceShader->setInt("triangleTex", 1);
 	pathTraceShader->setInt("nodesTex", 2);
+	pathTraceShader->stopUse();
 
+	outputShader->use();
 	outputShader->setInt("accumTex", 0);
+	outputShader->stopUse();
+
+	tonemapShader->use();
 	tonemapShader->setInt("accumTex", 0);
+	tonemapShader->stopUse();
 }
 
-void Render::draw(unsigned int& frameCounter) {
-	frameCounter++;
-
-	glActiveTexture(GL_TEXTURE0);
+void Render::Draw() {
 	glBindFramebuffer(GL_FRAMEBUFFER, pathTraceFBO);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, accumTexture);
-	quad->Draw(pathTraceShader, frameCounter);
+	quad->Draw(pathTraceShader);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, accumFBO);
-	glBindTexture(GL_TEXTURE_2D, pathTraceTexture);
-	quad->Draw(outputShader, frameCounter);
-
 	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, pathTraceTexture);
+	quad->Draw(outputShader);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, accumTexture);
-	quad->Draw(tonemapShader, frameCounter);
+	quad->Draw(tonemapShader);
 }
 
+void Render::Update(unsigned int& frameCounter) {
+	pathTraceShader->use();
+	pathTraceShader->setVec3("cameraPos", camera->Position);
+	pathTraceShader->setMat4("cameraPos", glm::mat4(1.f));
+	pathTraceShader->setInt("frameCounter", frameCounter++);
+	pathTraceShader->stopUse();
+}
+
+void Render::ResizeRenderer(const std::string& shadersDirectory) {
+	// Delete textures
+	glDeleteTextures(1, &pathTraceTexture);
+	glDeleteTextures(1, &accumTexture);
+
+	// Delete FBOs
+	glDeleteFramebuffers(1, &pathTraceFBO);
+	glDeleteFramebuffers(1, &accumFBO);
+
+	// Delete shaders
+	pathTraceShader = nullptr;
+	outputShader = nullptr;
+	tonemapShader = nullptr;
+
+	InitFBOs();
+	InitShaders(shadersDirectory);
+}
 #endif // !RENDER_H

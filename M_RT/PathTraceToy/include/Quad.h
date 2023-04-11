@@ -11,7 +11,7 @@ class Quad
 {
 public:
     Quad();
-    void Draw(std::shared_ptr<Shader> shader, unsigned int& frameCounter);
+    void Draw(std::shared_ptr<Shader> shader);
 
 private:
     GLuint vao;
