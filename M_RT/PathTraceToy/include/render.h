@@ -1,6 +1,9 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image/stb_image.h>
+
 #include <vector>
 #include <string>
 #include <iomanip>
@@ -10,20 +13,46 @@
 #include "material.h"
 #include "bvh.h"
 #include "scene.h"
+#include "envmap.h"
+
 #include <learnopengl/shader.h>
+#include <hdrloader/hdrloader.h>
 
 class Render
 {
 public:
 	Render(){}
-	Render(const std::string& shadersDirectory, const std::string& objectDirectory, const int& width, const int& height) : renderWidth(width), renderHeight(height){
+	Render(const std::string& shadersDirectory, const std::string& objectDirectory, const std::string& evnmapDirectory, const int& width, const int& height) : renderWidth(width), renderHeight(height){
 		quad = std::make_shared<Quad>();
 		
 		Scene scene = Scene(objectDirectory);
 		trianglesAttrib = scene.trianglesAttrib;
 		bvhNodes = scene.bvhNodes;
 
-		camera = std::make_shared<Camera>(glm::vec3(0.f, 0.1f, 0.5f));
+		camera = std::make_shared<Camera>(glm::vec3(-0.f, 0.3f, 0.75f));
+
+		//envMap = std::make_shared<Envmap>(evnmapDirectory + "sunset.hdr");
+		stbi_set_flip_vertically_on_load(true);
+		int w, h, nrComponents;
+		float* data = stbi_loadf((evnmapDirectory + "sunset.hdr").c_str(), &w, &h, &nrComponents, 0);
+		if (data)
+		{
+			glGenTextures(1, &envMapTex);
+			glBindTexture(GL_TEXTURE_2D, envMapTex);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, w, h, 0, GL_RGB, GL_FLOAT, data); // note how we specify the texture's data value to be float
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+			stbi_image_free(data);
+			std::cout << "Successed to load HDR image." << std::endl;
+		}
+		else
+		{
+			std::cout << "Failed to load HDR image." << std::endl;
+		}
 
 		InitGPUDataBuffers();
 		InitFBOs();
@@ -39,6 +68,8 @@ public:
 	std::shared_ptr<Mesh> sphere;
 	std::shared_ptr<Mesh> floor;
 
+	std::shared_ptr<Envmap> envMap;
+
 	std::shared_ptr<Bvh> bvh;
 
 	std::vector<glm::vec3> trianglesAttrib;
@@ -53,6 +84,7 @@ public:
 
 	GLuint triangleTex;
 	GLuint bvhNodeTex;
+	GLuint envMapTex;
 
 	// FBOs
 	GLuint pathTraceFBO;
@@ -101,6 +133,8 @@ void Render::InitGPUDataBuffers() {
 	glBindTexture(GL_TEXTURE_BUFFER, triangleTex);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_BUFFER, bvhNodeTex);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, envMapTex);
 }
 
 void Render::InitFBOs() {
@@ -141,6 +175,7 @@ void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader->setInt("accumTex", 0);
 	pathTraceShader->setInt("triangleTex", 1);
 	pathTraceShader->setInt("nodesTex", 2);
+	pathTraceShader->setInt("envMapTex", 3);
 	pathTraceShader->stopUse();
 
 	outputShader->use();

@@ -1,9 +1,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image/stb_image.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -11,7 +8,6 @@
 #include <vector>
 
 #include <learnopengl/camera.h>
-
 #include "render.h"
 
 GLFWwindow* window;
@@ -35,6 +31,7 @@ clock_t t1, t2;
 
 const std::string shaderPath = "./assets/shaders/";
 const std::string objectPath = "./assets/obj/";
+const std::string evnmapDirectory = "./assets/hdr/";
 
 bool initWindow();
 bool initRender();
@@ -67,6 +64,31 @@ void processInput(GLFWwindow* window) {
 		glfwSetWindowShouldClose(window, true);
 }
 
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+	float xpos = static_cast<float>(xposIn);
+	float ypos = static_cast<float>(yposIn);
+
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+	lastX = xpos;
+	lastY = ypos;
+
+	render->camera->ProcessMouseMovement(xoffset, yoffset);
+}
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	render->camera->ProcessMouseScroll(static_cast<GLfloat>(yoffset));
+}
+
 bool initWindow(){
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -82,7 +104,9 @@ bool initWindow(){
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
@@ -91,7 +115,7 @@ bool initWindow(){
 }
 
 bool initRender() {
-	render = std::make_shared<Render>(shaderPath, objectPath, SCR_WIDTH, SCR_HEIGHT);
+	render = std::make_shared<Render>(shaderPath, objectPath, evnmapDirectory, SCR_WIDTH, SCR_HEIGHT);
 	return true;
 }
 
@@ -104,8 +128,8 @@ void Draw() {
 	t2 = clock();
 	float dt = (double)(t2 - t1) / CLOCKS_PER_SEC;
 	float fps = 1.0 / dt;
-	std::cout << "\r";
-	std::cout << std::fixed << std::setprecision(2) << "FPS : " << fps << "    迭代次数: " << frameCounter << std::endl;
+	//std::cout << "\r";
+	//std::cout << std::fixed << std::setprecision(2) << "FPS : " << fps << "    迭代次数: " << frameCounter << std::endl;
 	t1 = t2;
 
 	processInput(window);

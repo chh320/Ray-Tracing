@@ -15,6 +15,8 @@ uniform samplerBuffer nodesTex;
 
 uniform sampler2D accumTex;
 
+uniform sampler2D envMapTex;
+
 uniform vec3 cameraPos;
 uniform mat4 cameraRotate;
 
@@ -187,7 +189,26 @@ vec3 toNormalHemisphere(vec3 v, vec3 N) {
     return v.x * tangent + v.y * bitangent + v.z * N;
 }
 
-// intersect -----------------------------------------------------------------
+// envmap -------------------------------------------------------------------
+
+// 将三维向量 v 转为 HDR map 的纹理坐标 uv
+vec2 SampleSphericalMap(vec3 v) {
+    vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
+    uv *= vec2(INV_TWO_PI, INV_PI);
+    uv += 0.5;  //  [-0.5, 0.5] to [0, 1]
+    uv.y = 1.0 - uv.y;
+    return uv;
+}
+
+// 获取 HDR 环境颜色
+vec3 sampleHdr(vec3 v) {
+    vec2 uv = SampleSphericalMap(normalize(v));
+    vec3 color = texture(envMapTex, uv).rgb;
+    //color = min(color, vec3(10));
+    return color;
+}
+
+// intersect ----------------------------------------------------------------
 
 HitResult hitTriangle(Triangle triangle, Ray ray) {
     HitResult res;
@@ -418,11 +439,13 @@ void main()
     vec4 dir = vec4((TexCoord * 2.0 - 1.0).xy + AA, -1.5, 0.0);
     ray.direction = normalize(dir.xyz);
 
+
     HitResult firstHit = hitBVH(ray);
     vec3 color;
 
     if(!firstHit.isHit){
         color = vec3(0);
+        //color = sampleHdr(ray.direction);
     } else {
         vec3 Le = firstHit.material.emissive;
         vec3 Li = pathTracing(firstHit, 10);
@@ -431,6 +454,6 @@ void main()
 
     vec3 accum = texture2D(accumTex, TexCoord).rgb;
     color = mix(accum, color, 1.0 / float(frameCounter + 1));
-    //color = color + accum;
+
     FragColor = vec4(color, 1.0);
 }

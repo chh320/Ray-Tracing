@@ -11,11 +11,41 @@ E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\bvh.
 E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\bvh.h(109,1): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
 E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\bvh.h(185,23): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\bvh.h(194,24): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\render.h(136,67): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(51,14): warning C4101: “return_struct”: 未引用的局部变量
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(99,17): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(105,11): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(106,12): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(33,42): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(45,41): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(50,41): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(57,41): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(65,41): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(73,41): warning C4305: “参数”: 从“double”到“T”截断
+          with
+          [
+              T=float
+          ]
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\render.h(170,67): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(48,14): warning C4101: “return_struct”: 未引用的局部变量
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(123,17): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(129,11): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(130,12): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 E:\Soft_ware\VisualStudio\VC\Tools\MSVC\14.29.30133\include\xutility(142,1): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
 E:\Soft_ware\VisualStudio\VC\Tools\MSVC\14.29.30133\include\memory(2006): message : 查看对正在编译的函数 模板 实例化“void std::_Construct_in_place<_Ty,std::vector<Triangle,std::allocator<Triangle>>&,int,unsigned __int64,int>(_Ty &,std::vector<Triangle,std::allocator<Triangle>> &,int &&,unsigned __int64 &&,int &&) noexcept(false)”的引用
           with
@@ -32,7 +62,7 @@ E:\Soft_ware\VisualStudio\VC\Tools\MSVC\14.29.30133\include\memory(2726): messag
           [
               _Ty=Bvh
           ]
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(42): message : 查看对正在编译的函数 模板 实例化“std::shared_ptr<Bvh> std::make_shared<Bvh,std::vector<Triangle,std::allocator<Triangle>>&,int,unsigned __int64,int>(std::vector<Triangle,std::allocator<Triangle>> &,int &&,unsigned __int64 &&,int &&)”的引用
-E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(91): warning C4715: “initWindow”: 不是所有的控件路径都返回值
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\include\scene.h(87): message : 查看对正在编译的函数 模板 实例化“std::shared_ptr<Bvh> std::make_shared<Bvh,std::vector<Triangle,std::allocator<Triangle>>&,int,unsigned __int64,int>(std::vector<Triangle,std::allocator<Triangle>> &,int &&,unsigned __int64 &&,int &&)”的引用
+E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\src\main.cpp(115): warning C4715: “initWindow”: 不是所有的控件路径都返回值
 LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
   PathTraceToy.vcxproj -> E:\Study\Computer_Graphics\RayTracing\Ray-Tracing\M_RT\PathTraceToy\PathTraceToy.exe

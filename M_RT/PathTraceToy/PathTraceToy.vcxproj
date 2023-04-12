@@ -144,11 +144,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\glad.c" />
+    <ClCompile Include="..\3rdParty\include\hdrloader\hdrloader.cpp" />
     <ClCompile Include="include\Quad.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rdParty\include\hdrloader\hdrloader.h" />
     <ClInclude Include="include\bvh.h" />
+    <ClInclude Include="include\envmap.h" />
     <ClInclude Include="include\material.h" />
     <ClInclude Include="include\mesh.h" />
     <ClInclude Include="include\Quad.h" />
