@@ -29,15 +29,16 @@ public:
 		trianglesAttrib = scene.trianglesAttrib;
 		bvhNodes = scene.bvhNodes;
 
-		camera = std::make_shared<Camera>(glm::vec3(-0.f, 0.3f, 0.75f));
+		camera = std::make_shared<Camera>(glm::vec3(-0.f, 0.3f, 0.8));
 
 		//envMap = std::make_shared<Envmap>(evnmapDirectory + "sunset.hdr");
-		stbi_set_flip_vertically_on_load(true);
+		//stbi_set_flip_vertically_on_load(true);
 		int w, h, nrComponents;
 		float* data = stbi_loadf((evnmapDirectory + "sunset.hdr").c_str(), &w, &h, &nrComponents, 0);
 		if (data)
 		{
 			glGenTextures(1, &envMapTex);
+			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_2D, envMapTex);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, w, h, 0, GL_RGB, GL_FLOAT, data); // note how we specify the texture's data value to be float
 
@@ -133,8 +134,8 @@ void Render::InitGPUDataBuffers() {
 	glBindTexture(GL_TEXTURE_BUFFER, triangleTex);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_BUFFER, bvhNodeTex);
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, envMapTex);
+	//glActiveTexture(GL_TEXTURE3);
+	//glBindTexture(GL_TEXTURE_2D, envMapTex);
 }
 
 void Render::InitFBOs() {
@@ -171,7 +172,7 @@ void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader->setInt("width", renderWidth);
 	pathTraceShader->setInt("height", renderHeight);
 	pathTraceShader->setVec3("cameraPos", camera->Position);
-	pathTraceShader->setMat4("cameraPos", glm::mat4(1.f));
+	pathTraceShader->setMat4("cameraRotate", glm::mat4(1.f));
 	pathTraceShader->setInt("accumTex", 0);
 	pathTraceShader->setInt("triangleTex", 1);
 	pathTraceShader->setInt("nodesTex", 2);
@@ -206,8 +207,6 @@ void Render::Draw() {
 
 void Render::Update(unsigned int& frameCounter) {
 	pathTraceShader->use();
-	pathTraceShader->setVec3("cameraPos", camera->Position);
-	pathTraceShader->setMat4("cameraPos", glm::mat4(1.f));
 	pathTraceShader->setInt("frameCounter", frameCounter++);
 	pathTraceShader->stopUse();
 }

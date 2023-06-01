@@ -37,6 +37,7 @@ bool initWindow();
 bool initRender();
 void Draw();
 void Update();
+void showFPS(GLFWwindow* pWindow);
 
 int main() {
 	if (!initWindow())
@@ -48,6 +49,7 @@ int main() {
 	GLFWvidmode return_struct;
 
 	while (!glfwWindowShouldClose(window)) {
+		showFPS(window);
 		Draw();
 		Update();
 	}
@@ -91,8 +93,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 bool initWindow(){
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Path Trace Toy", NULL, NULL);
@@ -104,9 +106,11 @@ bool initWindow(){
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetCursorPosCallback(window, mouse_callback);
-	glfwSetScrollCallback(window, scroll_callback);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetCursorPosCallback(window, mouse_callback);
+	//glfwSetScrollCallback(window, scroll_callback);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	glfwSwapInterval(0);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
@@ -119,19 +123,28 @@ bool initRender() {
 	return true;
 }
 
-void Draw() {
+void showFPS(GLFWwindow* pWindow)
+{
+	// Measure speed
 	float curFrame = glfwGetTime();
 	deltaTime = curFrame - lastFrame;
-	lastFrame = curFrame;
 
-	// 帧计时
 	t2 = clock();
 	float dt = (double)(t2 - t1) / CLOCKS_PER_SEC;
 	float fps = 1.0 / dt;
-	//std::cout << "\r";
-	//std::cout << std::fixed << std::setprecision(2) << "FPS : " << fps << "    迭代次数: " << frameCounter << std::endl;
+	if (deltaTime >= 1.0) {
+		std::stringstream ss;
+		ss << "Path Trace Toy " << " [" << fps << " FPS]" << " frame count : " << frameCounter;
+
+		glfwSetWindowTitle(pWindow, ss.str().c_str());
+
+		lastFrame = curFrame;
+	}
 	t1 = t2;
 
+}
+
+void Draw() {
 	processInput(window);
 
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -155,6 +168,9 @@ void updateRenderSize() {
 }
 
 void Update(){
+	/*if(frameCounter % 50 == 0)
+		std::cout << "frame count : " << frameCounter << std::endl;*/
 	updateRenderSize();
 	render->Update(frameCounter);
+
 }

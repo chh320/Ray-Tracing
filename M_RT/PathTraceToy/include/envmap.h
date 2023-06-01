@@ -6,12 +6,12 @@ public:
 	Envmap(const std::string& evnmapPath) {
         stbi_set_flip_vertically_on_load(true);
         int width, height, nrComponents;
-        float* data = stbi_loadf(evnmapPath.c_str(), &width, &height, &nrComponents, 0);
+        unsigned char* data = stbi_load(evnmapPath.c_str(), &width, &height, &nrComponents, 0);
         if (data)
         {
             glGenTextures(1, &envMapTex);
             glBindTexture(GL_TEXTURE_2D, envMapTex);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, data); // note how we specify the texture's data value to be float
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

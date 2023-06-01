@@ -9,18 +9,18 @@ public:
 
         subsurface = 0.0f;
         metallic = 0.0f;
-        specular = 0.0f;
+        specular = 0.5f;
 
         specularTint = 0.0f;
-        roughness = 0.0f;
+        roughness = 0.5f;
         anisotropic = 0.0f;
 
         sheen = 0.0f;
         sheenTint = 0.0f;
         clearcoat = 0.0f;
 
-        clearcoatGloss = 0.f;
-        IOR = 1.5f;
+        clearcoatGloss = 1.0;
+        IOR = 1.0f;
         transmission = 0.f;
     }
 public:
