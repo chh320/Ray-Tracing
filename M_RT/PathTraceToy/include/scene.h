@@ -44,19 +44,21 @@ Scene::Scene(const std::string& objectDirectory) {
 	shared_ptr<Material> m2 = make_shared<Material>();
 	m2->baseColor = glm::vec3(0.8, 0.3, 0.3);
 	m2->roughness = 0.3;
+	m2->metallic = 1.0;
 	m2->clearcoat = 1.0;
 	shared_ptr<Mesh> bunny  = make_shared<Mesh>(objectDirectory + "Stanford Bunny.obj", m2, model);
 
 	model = glm::mat4(1.f);
 	model = glm::translate(model, glm::vec3(0.f, 0.0f, 0.f));
 	shared_ptr<Material> m3 = make_shared<Material>();
-	m3->roughness = 0.01;
-	m3->metallic = 0.1;
+	m3->roughness = 0.3;
+	//m3->metallic = 1.0;
 	m3->specular = 1.0;
+	m3->clearcoat = 1.0;
 	shared_ptr<Mesh> floor  = make_shared<Mesh>(objectDirectory + "quad2.obj", m3, model);
 
 	std::vector<Triangle>().swap(triangles);
-	triangles.insert(triangles.end(),	sphere->triangles.begin(), sphere->triangles.end());
+	//triangles.insert(triangles.end(),	sphere->triangles.begin(), sphere->triangles.end());
 	triangles.insert(triangles.end(), sphere2->triangles.begin(), sphere2->triangles.end());
 	triangles.insert(triangles.end(), bunny->triangles.begin(), bunny->triangles.end());
 	triangles.insert(triangles.end(), floor->triangles.begin(), floor->triangles.end());

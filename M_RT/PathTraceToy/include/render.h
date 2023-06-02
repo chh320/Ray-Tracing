@@ -31,29 +31,13 @@ public:
 
 		camera = std::make_shared<Camera>(glm::vec3(-0.f, 0.3f, 0.8));
 
-		//envMap = std::make_shared<Envmap>(evnmapDirectory + "sunset.hdr");
-		//stbi_set_flip_vertically_on_load(true);
-		int w, h, nrComponents;
-		float* data = stbi_loadf((evnmapDirectory + "sunset.hdr").c_str(), &w, &h, &nrComponents, 0);
-		if (data)
-		{
-			glGenTextures(1, &envMapTex);
-			glActiveTexture(GL_TEXTURE3);
-			glBindTexture(GL_TEXTURE_2D, envMapTex);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, w, h, 0, GL_RGB, GL_FLOAT, data); // note how we specify the texture's data value to be float
+		envMap = std::make_shared<Envmap>(evnmapDirectory + "blue_photo_studio_4k.hdr");
+		envMap->generateHdrCache();
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, envMap->envMapTex);
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, envMap->envMapCache);
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			stbi_image_free(data);
-			std::cout << "Successed to load HDR image." << std::endl;
-		}
-		else
-		{
-			std::cout << "Failed to load HDR image." << std::endl;
-		}
 
 		InitGPUDataBuffers();
 		InitFBOs();
@@ -85,7 +69,6 @@ public:
 
 	GLuint triangleTex;
 	GLuint bvhNodeTex;
-	GLuint envMapTex;
 
 	// FBOs
 	GLuint pathTraceFBO;
@@ -169,6 +152,7 @@ void Render::InitShaders(const std::string& shadersDirectory) {
 
 	pathTraceShader->use();
 	pathTraceShader->setInt("nTriangles", trianglesAttrib.size() / 12);
+	pathTraceShader->setInt("hdrResolution", max(envMap->width, envMap->height));
 	pathTraceShader->setInt("width", renderWidth);
 	pathTraceShader->setInt("height", renderHeight);
 	pathTraceShader->setVec3("cameraPos", camera->Position);
@@ -177,6 +161,8 @@ void Render::InitShaders(const std::string& shadersDirectory) {
 	pathTraceShader->setInt("triangleTex", 1);
 	pathTraceShader->setInt("nodesTex", 2);
 	pathTraceShader->setInt("envMapTex", 3);
+	pathTraceShader->setInt("envMapCache", 4);
+
 	pathTraceShader->stopUse();
 
 	outputShader->use();

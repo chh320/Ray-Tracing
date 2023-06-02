@@ -9,6 +9,7 @@ uniform int width;
 uniform int height;
 uniform int nTriangles;
 uniform int frameCounter;
+uniform int hdrResolution;
 
 uniform samplerBuffer triangleTex;
 uniform samplerBuffer nodesTex;
@@ -16,6 +17,7 @@ uniform samplerBuffer nodesTex;
 uniform sampler2D accumTex;
 
 uniform sampler2D envMapTex;
+uniform sampler2D envMapCache;
 
 uniform vec3 cameraPos;
 uniform mat4 cameraRotate;
@@ -234,6 +236,33 @@ vec3 sampleHdr(vec3 v) {
     vec2 uv = SampleSphericalMap(normalize(v));
     vec3 color = texture2D(envMapTex, uv).rgb;
     return color;
+}
+
+vec3 sampleHdrCache(float xi_1, float xi_2){
+    vec2 xy = texture2D(envMapCache, vec2(xi_1, xi_2)).rg;
+    xy.y = 1.0 - xy.y;
+
+    float phi = TWO_PI * (xy.x - 0.5);
+    float theta = PI * (xy.y - 0.5);
+
+    vec3 L = vec3(cos(theta)*cos(phi), sin(theta), cos(theta)*sin(phi));
+
+    return L;
+}
+
+// 输入光线方向 L 获取 HDR 在该位置的概率密度
+// hdr 分辨率为 4096 x 2048 --> hdrResolution = 4096
+float hdrPdf(vec3 L, int hdrResolution) {
+    vec2 uv = SampleSphericalMap(normalize(L));   // 方向向量转 uv 纹理坐标
+
+    float pdf = texture2D(envMapCache, uv).b;      // 采样概率密度
+    float theta = PI * (0.5 - uv.y);            // theta 范围 [-pi/2 ~ pi/2]
+    float sin_theta = max(sin(theta), 1e-10);
+
+    // 球坐标和图片积分域的转换系数
+    float p_convert = float(hdrResolution * hdrResolution / 2) / (2.0 * PI * PI * sin_theta);  
+    
+    return pdf * p_convert;
 }
 
 // intersect ----------------------------------------------------------------
@@ -661,6 +690,11 @@ vec3 SampleBRDF(float xi_1, float xi_2, float xi_3, vec3 V, vec3 N, in Material 
     return vec3(0, 1, 0);
 }
 
+float misMixWeight(float a, float b) {
+    float t = a * a;
+    return t / (b*b + t);
+}
+
 // pathTrace ---------------------------------------------------------------------------
 
 vec3 pathTracing(HitResult hit, int maxBounce) {
@@ -723,6 +757,30 @@ vec3 pathTracingImportanceSampling(HitResult hit, int maxBounce){
         vec3 V = -hit.viewDir;
         vec3 N = hit.normal;
 
+        
+        // HDR 环境贴图重要性采样    
+        Ray hdrTestRay;
+        hdrTestRay.origin = hit.hitPoint;
+        hdrTestRay.direction = sampleHdrCache(rand(), rand());
+
+        // 进行一次求交测试 判断是否有遮挡
+        if(dot(N, hdrTestRay.direction) > 0.0) { // 如果采样方向背向点 p 则放弃测试, 因为 N dot L < 0            
+            HitResult hdrHit = hitBVH(hdrTestRay);
+    
+            // 天空光仅在没有遮挡的情况下积累亮度
+            if(!hdrHit.isHit) {
+                vec3 L = hdrTestRay.direction;
+                vec3 color = sampleHdr(L);
+                float pdf_light = hdrPdf(L, hdrResolution);
+                vec3 f_r = BRDF_Evaluate(V, N, L, hit.material);
+                float pdf_brdf = BRDF_Pdf(V, N, L, hit.material);
+                
+                float mis_weight = misMixWeight(pdf_light, pdf_brdf);
+                Lo += mis_weight * history * color * f_r * dot(N, L) / pdf_light;	// 累计亮度
+            }
+        }
+        
+
         vec2 uv = sobolVec2(frameCounter+1, bounce);
         uv = CranleyPattersonRotation(uv);
 
@@ -744,7 +802,10 @@ vec3 pathTracingImportanceSampling(HitResult hit, int maxBounce){
         // 未命中
         if(!newHit.isHit) {
             vec3 skyColor = sampleHdr(randomRay.direction);
-            Lo += history * skyColor * f_r * NdotL / pdf_brdf;
+            float pdf_light = hdrPdf(L, 4096);
+
+            float mis_weight = misMixWeight(pdf_brdf, pdf_light);
+            Lo += mis_weight * history * skyColor * f_r * NdotL / pdf_brdf;
             break;
         }
         
@@ -778,7 +839,7 @@ void main()
         color = sampleHdr(ray.direction);
     } else {
         vec3 Le = firstHit.material.emissive;
-        vec3 Li = pathTracingImportanceSampling(firstHit, 2);
+        vec3 Li = pathTracingImportanceSampling(firstHit, 1);
         color = Le + Li;
     }
 
